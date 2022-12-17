@@ -69,43 +69,58 @@ public class Main {
                     }
                 }
                 /** Read Fuzzy Sets */
-                String line = "";
-                Variable variable;
                 while (true){
-                    //String line = fileReader.nextLine();
-                    line = fileReader.nextLine();
+                    ArrayList<String> lines = new ArrayList<>();
+                    String line = fileReader.nextLine();
+                    if (line.equals("x")) break;
+                    while (!line.equals("x")){
+                        lines.add(line);
+                        line = fileReader.nextLine();
+                    }
+                    ReadFuzzySetsFromFile(lines);
+                }
+                /** Read Rules */
+                while (true){
+                    String line = fileReader.nextLine();
                     if (line.equals("x")) break;
                     else {
-                        //line = fileReader.nextLine();
-                        variable = GetVariableByName(line);
-                        while (true){
-                            if (line.equals("x")) {
-                                break;
-                            }
-                            else {
-                                String[] set = fileReader.nextLine().split(" ");
-                                FuzzySet newFuzzySet = new FuzzySet();
-                                newFuzzySet.setName(set[0]);
-                                newFuzzySet.setType(set[1]);
-                                int numberOfValues = newFuzzySet.getType().equals("TRI") ? 3 : 4;
-                                String[] values = new String[numberOfValues];
-                                System.arraycopy(set, 2, values, 0, numberOfValues);
-                                newFuzzySet.setValues(values);
-                                assert variable != null;
-                                variable.addFuzzySet(newFuzzySet);
-                                System.out.println(newFuzzySet);
-                                line = fileReader.nextLine();
-                            }
-                        }
+                        String[] rule = line.split(" ");
+                        Rule newRule = new Rule();
+                        newRule.addVariable(GetVariableByName(rule[0]));
+                        newRule.addMembership(rule[1]);
+                        newRule.addOperator(rule[2]);
+                        newRule.addVariable(GetVariableByName(rule[3]));
+                        newRule.addMembership(rule[4]);
+                        newRule.setOutVariable(rule[6]);
+                        newRule.setOutSet(rule[7]);
+                        rules.add(newRule);
+                        System.out.println(newRule);
                     }
                 }
             }
-            System.out.println(systemName);
-            System.out.println(systemDescription);
             fileReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
+        }
+    }
+
+    private static void ReadFuzzySetsFromFile(ArrayList<String> lines) {
+        Variable variable = GetVariableByName(lines.get(0));
+        lines.remove(0);
+        for (String line:
+             lines) {
+            String[] set = line.split(" ");
+            FuzzySet newFuzzySet = new FuzzySet();
+            newFuzzySet.setName(set[0]);
+            newFuzzySet.setType(set[1]);
+            int numberOfValues = newFuzzySet.getType().equals("TRI") ? 3 : 4;
+            String[] values = new String[numberOfValues];
+            System.arraycopy(set, 2, values, 0, numberOfValues);
+            newFuzzySet.setValues(values);
+            assert variable != null;
+            variable.addFuzzySet(newFuzzySet);
+            System.out.println(newFuzzySet);
         }
     }
 

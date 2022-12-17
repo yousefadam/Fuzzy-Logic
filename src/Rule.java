@@ -53,4 +53,15 @@ class Rule {
     public void setOutSet(String outSet) {
         this.outSet = outSet;
     }
+
+    @Override
+    public String toString() {
+        return "Rule{" +
+                "variables=" + variables +
+                ", operators=" + operators +
+                ", memberships=" + memberships +
+                ", outVariable='" + outVariable + '\'' +
+                ", outSet='" + outSet + '\'' +
+                '}';
+    }
 }

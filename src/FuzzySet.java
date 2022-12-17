@@ -4,6 +4,16 @@ class FuzzySet {
     private String name;
     private String type;
     private double membership;
+
+    public double getCentroid() {
+        double sum = 0;
+        for (Double value: values) {
+            sum += value;
+        }
+        return sum / values.size();
+    }
+
+    private double centroid;
     private ArrayList<Double> values = new ArrayList<>();
 
     public double getMembership() {

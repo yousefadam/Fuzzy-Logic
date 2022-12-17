@@ -131,7 +131,7 @@ public class Main {
 
     private static void AddFuzzySetsToExistingVariable() {
         System.out.println("""
-                Enter the variable’s name:
+                Enter the variable's name:
                 --------------------------""");
         Variable currentVariable = GetVariableByName(scanner.next());
         if (currentVariable == null) {
@@ -152,6 +152,7 @@ public class Main {
                 currentVariable.addFuzzySet(newFuzzySet);
             }
         }
+        MainMenu();
     }
 
     private static void HandleFuzzySetValuesInput(FuzzySet newFuzzySet, String input) {
@@ -180,11 +181,11 @@ public class Main {
             String firstVariable = scanner.next();
             if (firstVariable.equals("x")) break;
             Rule newRule = new Rule();
-            newRule.setFirstVariable(firstVariable);
-            newRule.setFirstSet(scanner.next());
-            newRule.setOperator(scanner.next());
-            newRule.setSecondVariable(scanner.next());
-            newRule.setSecondSet(scanner.next());
+            newRule.addVariable(GetVariableByName(firstVariable));
+            newRule.addMembership(scanner.next());
+            newRule.addOperator(scanner.next());
+            newRule.addVariable(GetVariableByName(scanner.next()));
+            newRule.addMembership(scanner.next());
             scanner.next();
             newRule.setOutVariable(scanner.next());
             newRule.setOutSet(scanner.next());
@@ -203,16 +204,18 @@ public class Main {
                 -----------------------""");
         for (Variable variable:
                 variables) {
-            System.out.print(variable.getName() + ": ");
-            variable.setCrispValue(scanner.nextInt());
+            if (variable.getType().equals("IN")){
+                System.out.print(variable.getName() + ": ");
+                variable.setCrispValue(scanner.nextInt());
+            }
         }
-        System.out.println("Running the simulation…");
-
+        ToolBox toolBox = new ToolBox(variables, rules);
+        toolBox.simulate();
     }
 
     private static void AddVariables() {
         System.out.println("""
-                Enter the variable’s name, type (IN/OUT) and range ([lower, upper]):
+                Enter the variable's name, type (IN/OUT) and range ([lower, upper]):
                 (Press x to finish)
                 --------------------------------------------------------------------""");
         while (true){

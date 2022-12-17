@@ -1,58 +1,41 @@
 import java.util.ArrayList;
 
 class Rule {
-    String firstVariable;
-    String secondVariable;
+    //String firstVariable;
+    //String secondVariable;
+    //String firstSet;
+    //String secondSet;
+    //String operator;
 
-    ArrayList<Variable> variables;  //new
-    String firstSet;
-    String secondSet;
-    String operator;
-    ArrayList <String> operators;   //new
-
-    ArrayList <String> memberships; //new
-
+    ArrayList<Variable> variables = new ArrayList<>();  //new
+    ArrayList <String> operators = new ArrayList<>();   //new
+    ArrayList <String> memberships = new ArrayList<>(); //new
     String outVariable;
     String outSet;
 
-    public String getFirstVariable() {
-        return firstVariable;
+
+    public ArrayList<Variable> getVariables() {
+        return variables;
     }
 
-    public void setFirstVariable(String firstVariable) {
-        this.firstVariable = firstVariable;
+    public void addVariable(Variable variable) {
+        this.variables.add(variable);
     }
 
-    public String getSecondVariable() {
-        return secondVariable;
+    public ArrayList<String> getOperators() {
+        return operators;
     }
 
-    public void setSecondVariable(String secondVariable) {
-        this.secondVariable = secondVariable;
+    public void addOperator(String operator) {
+        this.operators.add(operator);
     }
 
-    public String getFirstSet() {
-        return firstSet;
+    public ArrayList<String> getMemberships() {
+        return memberships;
     }
 
-    public void setFirstSet(String firstSet) {
-        this.firstSet = firstSet;
-    }
-
-    public String getSecondSet() {
-        return secondSet;
-    }
-
-    public void setSecondSet(String secondSet) {
-        this.secondSet = secondSet;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public void addMembership(String membership) {
+        this.memberships.add(membership);
     }
 
     public String getOutVariable() {

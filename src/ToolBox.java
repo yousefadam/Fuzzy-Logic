@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
 public class ToolBox {
-    ArrayList<Variable> variables = new ArrayList<>();
-    ArrayList<Rule> rules = new ArrayList<>();
+    ArrayList<Variable> variables;
+    ArrayList<Rule> rules;
     ArrayList<Double> centroids = new ArrayList<>();
-    ArrayList<Double> outputMemberships;
-    ArrayList<String> outputSets;
+    ArrayList<Double> outputMemberships = new ArrayList<>();
+    ArrayList<String> outputSets = new ArrayList<>();
 
     public ToolBox(ArrayList<Variable> variables, ArrayList<Rule> rules) {
         this.variables = variables;
@@ -34,9 +34,8 @@ public class ToolBox {
             denominator += outputMemberships.get(i);
         }
         result = numerator / denominator;
-
         System.out.println("Defuzzification => done");
-
+        System.out.println(result);
     }
 
     private void infer() {
@@ -52,22 +51,17 @@ public class ToolBox {
                 Variable variable1 = getVariable(rule.variables.get(i).getName());
                 Variable variable2 = getVariable(rule.variables.get(i + 1).getName());
 
-                if(rule.operators.get(i).equals("or")){
-                    membership = Math.max(variable1.getMembership(rule.memberships.get(i)),
-                            variable2.getMembership(rule.memberships.get(i+1)));
-                }
-                else if(rule.operators.get(i).equals("and")){
-                    membership = Math.min(variable1.getMembership(rule.memberships.get(i)),
-                            variable2.getMembership(rule.memberships.get(i+1)));
-                }
-                else if(rule.operators.get(i).equals("or_not")){
-                    membership = Math.max(variable1.getMembership(rule.memberships.get(i)),
-                            1 - variable2.getMembership(rule.memberships.get(i+1)));
-                }
-                else if (rule.operators.get(i).equals("and_not")){
-                    membership = Math.min(variable1.getMembership(rule.memberships.get(i)),
-                           1 - variable2.getMembership(rule.memberships.get(i+1)));
-                }
+                membership = switch (rule.operators.get(i)) {
+                    case "or" -> Math.max(variable1.getMembership(rule.memberships.get(i)),
+                            variable2.getMembership(rule.memberships.get(i + 1)));
+                    case "and" -> Math.min(variable1.getMembership(rule.memberships.get(i)),
+                            variable2.getMembership(rule.memberships.get(i + 1)));
+                    case "or_not" -> Math.max(variable1.getMembership(rule.memberships.get(i)),
+                            1 - variable2.getMembership(rule.memberships.get(i + 1)));
+                    case "and_not" -> Math.min(variable1.getMembership(rule.memberships.get(i)),
+                            1 - variable2.getMembership(rule.memberships.get(i + 1)));
+                    default -> membership;
+                };
             }
 
             Variable outputVariable = getVariable(rule.getOutVariable());

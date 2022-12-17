@@ -55,5 +55,17 @@ class Variable {
     public void setCrispValue(int crispValue) {
         this.crispValue = crispValue;
     }
+
+    @Override
+    public String toString() {
+        return "Variable{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", lower=" + lower +
+                ", upper=" + upper +
+                ", crispValue=" + crispValue +
+                ", fuzzySets=" + fuzzySets +
+                '}';
+    }
 }
 

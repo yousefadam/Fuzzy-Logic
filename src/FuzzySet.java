@@ -41,4 +41,13 @@ class FuzzySet {
             this.values.add(Double.parseDouble(value.trim()));
         }
     }
+
+    @Override
+    public String toString() {
+        return "FuzzySet{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", values=" + values +
+                '}';
+    }
 }

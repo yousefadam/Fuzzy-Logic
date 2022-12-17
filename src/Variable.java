@@ -8,6 +8,15 @@ class Variable {
     private double crispValue;
     private ArrayList<FuzzySet> fuzzySets = new ArrayList<>();
 
+    public double getMembership(String setName){
+        for (FuzzySet set: fuzzySets) {
+            if (setName.equals(set.getName())){
+                return set.getMembership();
+            };
+        }
+        return 0;
+    }
+
     public ArrayList<FuzzySet> getFuzzySets() {
         return fuzzySets;
     }

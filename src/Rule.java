@@ -1,9 +1,17 @@
- class Rule {
+import java.util.ArrayList;
+
+class Rule {
     String firstVariable;
     String secondVariable;
+
+    ArrayList<Variable> variables;  //new
     String firstSet;
     String secondSet;
     String operator;
+    ArrayList <String> operators;   //new
+
+    ArrayList <String> memberships; //new
+
     String outVariable;
     String outSet;
 

@@ -3,22 +3,88 @@ import java.util.ArrayList;
 public class ToolBox {
     ArrayList<Variable> variables = new ArrayList<>();
     ArrayList<Rule> rules = new ArrayList<>();
+    ArrayList<Double> centroids = new ArrayList<>();
+    ArrayList<Double> outputMemberships;
+    ArrayList<String> outputSets;
 
     public ToolBox(ArrayList<Variable> variables, ArrayList<Rule> rules) {
         this.variables = variables;
         this.rules = rules;
     }
+
+    Variable getVariable(String name) {
+        for (Variable variable : variables) {
+            if (variable.getName().equals(name))
+                return variable;
+        }
+        return null;
+    }
     
     public void simulate(){
+        System.out.println("Running the simulation...");
         fuzzify();
         infer();
         deffuzify();
     }
 
     private void deffuzify() {
+        double numerator = 0, denominator = 0, result = 0;
+        for (int i=0 ; i<outputMemberships.size() ; i++) {
+            numerator += outputMemberships.get(i) * centroids.get(i);
+            denominator += outputMemberships.get(i);
+        }
+        result = numerator / denominator;
+
+        System.out.println("Defuzzification => done");
+
     }
 
     private void infer() {
+        for (Rule rule: rules) {
+            double membership = 0;
+
+            if(rule.operators.size() == 0){
+                Variable variable = rule.variables.get(0);
+                membership = variable.getMembership(rule.memberships.get(0));
+            }
+
+            for (int i = 0; i < rule.operators.size(); i++) {
+                Variable variable1 = getVariable(rule.variables.get(i).getName());
+                Variable variable2 = getVariable(rule.variables.get(i + 1).getName());
+
+                if(rule.operators.get(i).equals("or")){
+                    membership = Math.max(variable1.getMembership(rule.memberships.get(i)),
+                            variable2.getMembership(rule.memberships.get(i+1)));
+                }
+                else if(rule.operators.get(i).equals("and")){
+                    membership = Math.min(variable1.getMembership(rule.memberships.get(i)),
+                            variable2.getMembership(rule.memberships.get(i+1)));
+                }
+                else if(rule.operators.get(i).equals("or_not")){
+                    membership = Math.max(variable1.getMembership(rule.memberships.get(i)),
+                            1 - variable2.getMembership(rule.memberships.get(i+1)));
+                }
+                else if (rule.operators.get(i).equals("and_not")){
+                    membership = Math.min(variable1.getMembership(rule.memberships.get(i)),
+                           1 - variable2.getMembership(rule.memberships.get(i+1)));
+                }
+            }
+
+            Variable outputVariable = getVariable(rule.getOutVariable());
+            for (FuzzySet set: outputVariable.getFuzzySets()) {
+                if(set.getName().equals(rule.getOutSet())){
+                    centroids.add(set.getCentroid());
+                }
+            }
+
+            outputMemberships.add(membership);
+            outputSets.add(rule.outVariable);
+
+
+
+        }
+        System.out.println("Inference => done");
+
     }
 
     private void fuzzify() {
@@ -59,6 +125,8 @@ public class ToolBox {
             }
 
         }
+
+        System.out.println("Fuzzification => done");
 
     }
 

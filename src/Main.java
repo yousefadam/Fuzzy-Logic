@@ -41,7 +41,7 @@ public class Main {
 
     private static void ReadSystemFromFile() {
         try {
-            File input = new File("Fuzzy-Logic/input.txt");
+            File input = new File("input.txt");
             Scanner fileReader = new Scanner(input);
             while (fileReader.hasNextLine()) {
                 /** Read System Name & Description */
@@ -51,8 +51,7 @@ public class Main {
                     if (line.equals("x")) break;
                     else systemDescription+= " " + line;
                 }
-                System.out.println(systemName);
-                System.out.println(systemDescription);
+
                 /** Read Variables */
                 while (true){
                     String line = fileReader.nextLine();
@@ -65,7 +64,7 @@ public class Main {
                         newVariable.setLower(Integer.parseInt(variable[2].substring(1, variable[2].length() - 1)));
                         newVariable.setUpper(Integer.parseInt(variable[3].substring(0, variable[3].length()-1)));
                         variables.add(newVariable);
-                        System.out.println(newVariable);
+
                     }
                 }
                 /** Read Fuzzy Sets */
@@ -94,7 +93,6 @@ public class Main {
                         newRule.setOutVariable(rule[6]);
                         newRule.setOutSet(rule[7]);
                         rules.add(newRule);
-                        System.out.println(newRule);
                     }
                 }
             }
@@ -103,6 +101,7 @@ public class Main {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        MainMenu();
     }
 
     private static void ReadFuzzySetsFromFile(ArrayList<String> lines) {
@@ -120,7 +119,6 @@ public class Main {
             newFuzzySet.setValues(values);
             assert variable != null;
             variable.addFuzzySet(newFuzzySet);
-            System.out.println(newFuzzySet);
         }
     }
 

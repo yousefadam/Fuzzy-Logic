@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ToolBox {
@@ -36,6 +38,14 @@ public class ToolBox {
         result = numerator / denominator;
         System.out.println("Defuzzification => done");
         System.out.println(result);
+        try {
+            FileWriter myWriter = new FileWriter("output.txt");
+            myWriter.write(String.valueOf(result));
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     private void infer() {
@@ -125,10 +135,13 @@ public class ToolBox {
     }
 
     private double calculateMembership(double x1, double y1, double x2, double y2, double crisp) {
+
         //y = mx + c
         double slope = (y2 - y1)/(x2 - x1);
-        double c = y1 - (slope * crisp);
-        return (slope * crisp) + c;
+        double x = slope < 0 ? x2 : x1;
+        double c = - (slope * x);
+        double result = (slope * crisp) + c;
+        return  result;
     }
 
     private int getYValue(String type, int pos) {
